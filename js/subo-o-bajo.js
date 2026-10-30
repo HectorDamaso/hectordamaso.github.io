@@ -44,7 +44,7 @@ function pintar() {
     ? `<p class="resultado-kcal">Pasa de ${numero('kcal').toLocaleString('es-ES')} a <strong>${r.kcalNuevas.map((n) => n.toLocaleString('es-ES')).join('–')} kcal</strong> al día.</p>`
     : '';
   const calculadora = r.accion === 'subir' || r.accion === 'bajar'
-    ? `<p class="resultado-nota">Para ${r.accion === 'subir' ? 'añadirlas' : 'quitarlas'} sin descuadrar nada, <a href="../">usa la calculadora de equivalencias</a>. Como referencia, 100–150 kcal son unos 30–40 g de arroz en seco o 10–15 g de aceite.</p>`
+    ? `<p class="resultado-nota">Para ${r.accion === 'subir' ? 'añadirlas' : 'quitarlas'} sin descuadrar nada, <a href="../equivalencias/">usa la calculadora de equivalencias</a>. Como referencia, 100–150 kcal son unos 30–40 g de arroz en seco o 10–15 g de aceite.</p>`
     : '';
   caja.innerHTML = `
     <div class="veredicto veredicto-${r.accion}">

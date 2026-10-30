@@ -3,9 +3,8 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-  <title>Calculadora de equivalencias · Héctor Dámaso</title>
-  <meta name="description" content="Cambia un alimento por otro sin descuadrar tu dieta. Calculadora de equivalencias de Héctor Dámaso.">
-  <meta name="robots" content="noindex">
+  <title>Herramientas · Héctor Dámaso</title>
+  <meta name="description" content="Herramientas gratis de Héctor Dámaso para llevar tu dieta: calorías, equivalencias de alimentos, ajustes semanales, fines de semana y minicut.">
   <meta name="theme-color" content="#0a0a0b">
   <link rel="icon" href="marca/hd-monograma.webp">
   <link rel="preload" href="fuentes/anton-latin.woff2" as="font" type="font/woff2" crossorigin>
@@ -13,91 +12,69 @@
   <link rel="stylesheet" href="estilos.css">
 </head>
 <body>
-  <header class="cabecera">
+  <header class="cabecera cabecera-portada">
     <div class="contenedor cabecera-fila">
       <span class="marca"><img src="marca/hd-monograma.webp" alt="" width="48" height="32"><span class="display">Héctor <span class="rojo">Dámaso</span></span></span>
       <span class="eyebrow claro">Coaching 1 a 1</span>
     </div>
     <div class="contenedor portada">
-      <p class="eyebrow claro">Herramienta para clientes</p>
-      <h1 class="display">Calculadora de <span class="rojo">equivalencias</span></h1>
-      <p class="entradilla">Cambia un alimento de tu dieta por otro sin descuadrar tus números. Elige el alimento, la cantidad y te digo cuánto poner del otro.</p>
+      <p class="eyebrow claro">Herramientas gratis</p>
+      <h1 class="display">Tu dieta, <span class="rojo">sin adivinar</span></h1>
+      <p class="entradilla">Las mismas cuentas que hago con mis clientes, para que sepas cuánto comer, cómo cambiar un alimento por otro y qué tocar cada semana.</p>
     </div>
   </header>
 
-  <main class="contenedor rejilla">
-    <section class="panel-oscuro" aria-label="Tu alimento">
-      <div class="campo combobox">
-        <label for="buscar-alimento">Alimento de tu dieta</label>
-        <input id="buscar-alimento" class="field field-dark" type="text" autocomplete="off" spellcheck="false"
-          role="combobox" aria-expanded="false" aria-controls="lista-alimentos" aria-autocomplete="list"
-          placeholder="Busca: arroz, pollo, avena…">
-        <ul id="lista-alimentos" class="desplegable" role="listbox" hidden></ul>
-        <p id="elegido" class="elegido" aria-live="polite"></p>
-      </div>
-
-      <div class="campo">
-        <label for="cantidad">Cantidad (g)</label>
-        <input id="cantidad" class="field field-dark" type="number" inputmode="decimal" min="1" max="2000" step="1" value="100">
-      </div>
-
-      <fieldset class="campo">
-        <legend>Igualar por</legend>
-        <div id="metricas" class="chips">
-          <button type="button" data-metrica="auto" aria-pressed="true">Automático</button>
-          <button type="button" data-metrica="proteina" aria-pressed="false">Proteína</button>
-          <button type="button" data-metrica="hidratos" aria-pressed="false">Hidratos</button>
-          <button type="button" data-metrica="grasa" aria-pressed="false">Grasas</button>
-          <button type="button" data-metrica="kcal" aria-pressed="false">Calorías</button>
-        </div>
-      </fieldset>
-
-      <dl id="resumen" class="resumen"></dl>
-      <p id="error" class="aviso" role="status"></p>
-    </section>
-
-    <section class="alternativas" aria-label="Alternativas">
-      <div class="alternativas-cabecera">
-        <h2 id="titulo-alternativas">Tus alternativas</h2>
-        <label class="casilla"><input id="todos" type="checkbox"> Ver todos los alimentos</label>
-      </div>
-      <div class="filtros">
-        <label class="sr-only" for="filtro-texto">Buscar alternativa</label>
-        <input id="filtro-texto" class="field" type="search" placeholder="Buscar una alternativa…">
-        <label class="sr-only" for="filtro-categoria">Categoría</label>
-        <select id="filtro-categoria" class="field"></select>
-      </div>
-      <p id="contador" class="contador"></p>
-      <ol id="lista" class="lista"></ol>
-      <button id="mas" type="button" class="button button-secondary" hidden>Ver más alternativas</button>
-    </section>
+  <main class="contenedor">
+    <ul class="catalogo">
+      <li>
+        <a class="tarjeta-herramienta" href="calorias/">
+          <span class="tarjeta-num">01</span>
+          <strong>Calculadora de <span class="rojo">calorías</span></strong>
+          <span>Cuánto gastas y cuánto comer para perder grasa, mantenerte o ganar músculo. Monta tu déficit entre comida, pasos y cardio.</span>
+          <em>Abrir →</em>
+        </a>
+      </li>
+      <li>
+        <a class="tarjeta-herramienta" href="equivalencias/">
+          <span class="tarjeta-num">02</span>
+          <strong>Calculadora de <span class="rojo">equivalencias</span></strong>
+          <span>Cambia un alimento por otro sin descuadrar tus números. Más de 600 alimentos y cuánta grasa añadir o quitar para que quede igual.</span>
+          <em>Abrir →</em>
+        </a>
+      </li>
+      <li>
+        <a class="tarjeta-herramienta" href="subo-o-bajo/">
+          <span class="tarjeta-num">03</span>
+          <strong>¿Subo o bajo <span class="rojo">calorías</span>?</strong>
+          <span>Mete tus pesos y tu cintura de las últimas semanas y te digo qué haría yo en una revisión.</span>
+          <em>Abrir →</em>
+        </a>
+      </li>
+      <li>
+        <a class="tarjeta-herramienta" href="fin-de-semana/">
+          <span class="tarjeta-num">04</span>
+          <strong>Modo <span class="rojo">fin de semana</span></strong>
+          <span>¿Cena con amigos o unas cervezas? Mira cuánto supone de verdad y cómo encajarlo sin culpa y sin compensar.</span>
+          <em>Abrir →</em>
+        </a>
+      </li>
+      <li>
+        <a class="tarjeta-herramienta" href="minicut/">
+          <span class="tarjeta-num">05</span>
+          <strong>Guía del <span class="rojo">minicut</span></strong>
+          <span>Haz el test: ¿te viene bien un minicut o un déficit normal? Si eres apto, tu plan y la guía paso a paso.</span>
+          <em>Abrir →</em>
+        </a>
+      </li>
+    </ul>
   </main>
-
-  <div class="contenedor herramientas">
-    <a class="otra-herramienta" href="calorias/">
-      <strong>Calculadora de <span class="rojo">calorías</span></strong>
-      <span>Calcula tu mantenimiento y monta el déficit con comida, pasos y cardio →</span>
-    </a>
-    <a class="otra-herramienta" href="subo-o-bajo/">
-      <strong>¿Subo o bajo <span class="rojo">calorías</span>?</strong>
-      <span>Mete tus pesos y tu cintura y te digo qué haría yo esta semana →</span>
-    </a>
-    <a class="otra-herramienta" href="fin-de-semana/">
-      <strong>Modo <span class="rojo">fin de semana</span></strong>
-      <span>¿Cena con amigos? Mira cuánto supone y cómo encajarla sin culpa →</span>
-    </a>
-    <a class="otra-herramienta" href="minicut/">
-      <strong>Guía del <span class="rojo">minicut</span></strong>
-      <span>Haz el test: ¿te viene bien un minicut o un déficit normal? →</span>
-    </a>
-  </div>
 
   <section class="contenedor" aria-labelledby="titulo-contacto">
     <div class="contacto">
       <div>
         <p class="eyebrow claro">Coaching 1 a 1</p>
-        <h2 id="titulo-contacto" class="display">¿Quieres que te haga <span class="rojo">la dieta a ti</span>?</h2>
-        <p class="contacto-texto">Dieta, entreno y seguimiento conmigo, adaptados a ti. Escríbeme y te cuento cómo funciona.</p>
+        <h2 id="titulo-contacto" class="display">¿Quieres que lo lleve <span class="rojo">yo contigo</span>?</h2>
+        <p class="contacto-texto">Dieta, entreno y revisiones cada semana, adaptados a tu trabajo, tus horarios y tu vida. Escríbeme y te cuento cómo funciona.</p>
       </div>
       <div class="contacto-botones">
         <a class="button button-primario" href="https://wa.link/1zr5s0" target="_blank" rel="noopener">
@@ -113,12 +90,7 @@
   </section>
 
   <footer class="contenedor pie">
-    <p><strong>Cómo leerlo.</strong> Pesa los alimentos como dice su nombre: en crudo o en seco si no pone «cocido». Las cantidades son aproximadas y redondeadas para que se puedan pesar. La calculadora iguala un nutriente: el resto puede cambiar un poco, y debajo de cada opción ves cuánto.</p>
-    <p><strong>Igualar las grasas.</strong> Si un cambio te deja con menos grasa (por ejemplo, salmón por pechuga de pollo), la opción te dice cuánto añadir de aceite, aguacate, frutos secos o chocolate negro para que quede igual. Si te deja con más grasa, te dice cuánto quitar de esas grasas en el resto del día.</p>
-    <p><strong>Equivalencia fija del programa:</strong> 100 g de arroz en seco = 400 g de papas en crudo.</p>
-    <p>Si tienes dudas con un cambio, pregúntame antes de hacerlo. Valores por 100 g del catálogo de alimentos de Héctor Dámaso.</p>
+    <p>Herramientas gratuitas de Héctor Dámaso. Son orientaciones para empezar, no sustituyen a una revisión personal. No se guarda ni se envía ningún dato: todo se calcula en tu móvil.</p>
   </footer>
-
-  <script type="module" src="js/app.js"></script>
 </body>
 </html>

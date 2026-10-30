@@ -263,6 +263,18 @@ input.contador-num { width: 64px; min-height: 40px; padding: 6px; }
 .otra-herramienta strong { font-family: var(--titular); font-weight: 400; font-size: 26px; text-transform: uppercase; letter-spacing: .01em; }
 .otra-herramienta span { color: var(--n600); font-size: 14px; }
 
+/* Portada con todas las herramientas */
+.cabecera-portada { padding-bottom: 96px; }
+.catalogo { list-style: none; margin: -64px 0 0; padding: 0; display: grid; gap: 14px; }
+@media (min-width: 760px) { .catalogo { grid-template-columns: 1fr 1fr; } }
+@media (min-width: 1080px) { .catalogo { grid-template-columns: repeat(3, 1fr); } }
+.tarjeta-herramienta { position: relative; display: flex; flex-direction: column; gap: 10px; height: 100%; padding: 24px; background: #fff; color: var(--n900); border: 1px solid var(--n200); border-radius: 10px; text-decoration: none; transition: border-color .15s, transform .15s; }
+.tarjeta-herramienta:hover { border-color: var(--n900); transform: translateY(-2px); }
+.tarjeta-num { font-family: var(--titular); font-size: 18px; color: var(--n400); }
+.tarjeta-herramienta strong { font-family: var(--titular); font-weight: 400; font-size: 30px; line-height: 1.02; text-transform: uppercase; letter-spacing: .01em; }
+.tarjeta-herramienta span:not(.tarjeta-num):not(.rojo) { color: var(--n600); font-size: 14px; flex: 1; }
+.tarjeta-herramienta em { font-style: normal; font-weight: 600; font-size: 14px; color: #8f1d17; }
+
 /* Contacto para el coaching 1 a 1 */
 .contacto { margin-top: 40px; display: grid; gap: 24px; align-items: center; background: var(--tinta); color: #fff; border-radius: 10px; padding: 32px 24px; }
 @media (min-width: 860px) { .contacto { grid-template-columns: minmax(0, 1fr) auto; padding: 40px; } }

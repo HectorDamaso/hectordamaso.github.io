@@ -12,7 +12,7 @@ const normal = (t) => t.normalize('NFD').replace(/[̀-ͯ]/g, '').toLowerCase();
 const guardado = (() => { try { return JSON.parse(localStorage.getItem('calculadora') || '{}'); } catch { return {}; } })();
 const guardar = () => { try { localStorage.setItem('calculadora', JSON.stringify({ de: estado.de, cantidad: estado.cantidad })); } catch { /* sin almacenamiento */ } };
 
-const { alimentos } = await (await fetch('datos/alimentos.json')).json();
+const { alimentos } = await (await fetch(new URL('../datos/alimentos.json', import.meta.url))).json();
 const porId = new Map(alimentos.map((a) => [a.id, a]));
 // Texto en el que se busca: el nombre y los sinónimos (p. ej. «patata» para «papas»).
 const textoBusqueda = new Map(alimentos.map((a) => [a.id, normal(`${a.nombre} ${a.buscar ?? ''}`)]));
