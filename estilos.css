@@ -265,10 +265,24 @@ input.contador-num { width: 64px; min-height: 40px; padding: 6px; }
 
 /* Portada con todas las herramientas */
 .cabecera-portada { padding-bottom: 96px; }
-.catalogo { list-style: none; margin: -64px 0 0; padding: 0; display: grid; gap: 14px; }
+/* Foto de Héctor: a la derecha del título y difuminada por detrás de las tarjetas. */
+.escena { position: relative; overflow: hidden; }
+.cabecera-portada > .contenedor { position: relative; z-index: 2; }
+.foto-portada { position: absolute; z-index: 1; top: 72px; right: 0; width: min(62vw, 300px); pointer-events: none;
+  -webkit-mask-image: linear-gradient(to bottom, #000 45%, transparent 92%), linear-gradient(to right, transparent 0%, #000 35%);
+  -webkit-mask-composite: source-in; mask-image: linear-gradient(to bottom, #000 45%, transparent 92%), linear-gradient(to right, transparent 0%, #000 35%);
+  mask-composite: intersect; opacity: .45; }
+@media (max-width: 959px) { .cabecera-portada .portada p, .cabecera-portada .portada h1 { text-shadow: 0 1px 14px rgb(0 0 0 / .9), 0 0 2px rgb(0 0 0 / .6); } }
+.foto-portada img { display: block; width: 100%; height: auto; }
+@media (min-width: 960px) {
+  .foto-portada { top: 40px; right: max(16px, calc((100% - 1180px) / 2)); width: 470px; opacity: 1;
+    -webkit-mask-image: linear-gradient(to bottom, #000 55%, transparent 96%), linear-gradient(to right, transparent 0%, #000 22%);
+    mask-image: linear-gradient(to bottom, #000 55%, transparent 96%), linear-gradient(to right, transparent 0%, #000 22%); }
+}
+.catalogo { position: relative; z-index: 3; list-style: none; margin: -64px 0 0; padding: 0; display: grid; gap: 14px; }
 @media (min-width: 760px) { .catalogo { grid-template-columns: 1fr 1fr; } }
 @media (min-width: 1080px) { .catalogo { grid-template-columns: repeat(3, 1fr); } }
-.tarjeta-herramienta { position: relative; display: flex; flex-direction: column; gap: 10px; height: 100%; padding: 24px; background: #fff; color: var(--n900); border: 1px solid var(--n200); border-radius: 10px; text-decoration: none; transition: border-color .15s, transform .15s; }
+.tarjeta-herramienta { position: relative; display: flex; flex-direction: column; gap: 10px; height: 100%; padding: 24px; background: rgb(255 255 255 / .82); -webkit-backdrop-filter: blur(10px); backdrop-filter: blur(10px); color: var(--n900); border: 1px solid var(--n200); border-radius: 10px; text-decoration: none; transition: border-color .15s, transform .15s; }
 .tarjeta-herramienta:hover { border-color: var(--n900); transform: translateY(-2px); }
 .tarjeta-num { font-family: var(--titular); font-size: 18px; color: var(--n400); }
 .tarjeta-herramienta strong { font-family: var(--titular); font-weight: 400; font-size: 30px; line-height: 1.02; text-transform: uppercase; letter-spacing: .01em; }
