@@ -463,7 +463,7 @@
     var ctaH = 150, ctaY = piso - 34 - ctaH;
     rr(ctx, M, ctaY, ancho, ctaH, 28); ctx.fillStyle = C_ROJO; ctx.fill();
     ctx.fillStyle = "#fff"; ctx.textAlign = "center";
-    var ctaTxt = "ESCRÍBEME RESET + " + P.clave, tam = 52;
+    var ctaTxt = "ESCRÍBEME ATLETA + " + P.clave, tam = 52;
     ctx.font = '400 ' + tam + 'px "Anton", sans-serif';
     while (ctx.measureText(ctaTxt).width > ancho - 60 && tam > 30) { tam -= 2; ctx.font = '400 ' + tam + 'px "Anton", sans-serif'; }
     ctx.fillText(ctaTxt, W / 2, ctaY + 72);
@@ -662,7 +662,7 @@
     $("r-pasos").innerHTML = P.pasos.map(function (p, i) { return "<li><b>" + (i + 1) + "</b><span>" + p + "</span></li>"; }).join("");
     $("r-error").textContent = P.error;
     $("r-aviso").hidden = !ultimo.avisoProgresion;
-    $("r-cierre").innerHTML = "Escríbeme <b>RESET + " + P.clave + "</b> por Instagram y te digo cómo lo haría contigo.";
+    $("r-cierre").innerHTML = "Escríbeme <b>ATLETA + " + P.clave + "</b> por Instagram y te digo cómo lo haría contigo.";
     $("estado-imagen").textContent = "";
     document.body.setAttribute("data-perfil", ultimo.perfil);
     mostrar("p-resultado");
