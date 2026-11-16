@@ -1,0 +1,174 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>Tu calculadora de kcal · Héctor Dámaso</title>
+  <meta name="description" content="Calcula en 30 segundos una estimación orientativa de tus calorías para mantenerte, perder grasa o ganar músculo. Herramienta gratuita de Héctor Dámaso.">
+  <meta name="theme-color" content="#0a0a0b">
+  <link rel="icon" href="../marca/hd-monograma.webp">
+  <link rel="preload" href="../fuentes/anton-latin.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="preload" href="../fuentes/space-grotesk-latin.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="stylesheet" href="../estilos.css">
+  <style>
+    .tres { display: grid; gap: 12px; margin-top: 14px; }
+    .caja-kcal { border-radius: 8px; padding: 16px 18px; border: 1px solid var(--n200); background: var(--n50); }
+    .caja-kcal.principal { background: #fdecea; border-color: #f3c3be; }
+    .caja-kcal h3 { margin: 0; font-size: 14px; letter-spacing: .04em; text-transform: uppercase; color: var(--n600); }
+    .caja-kcal .cifra { margin: 6px 0 0; font-family: var(--titular); font-size: clamp(30px, 8vw, 40px); line-height: 1.05; }
+    .caja-kcal .cifra small { font-size: .5em; font-family: inherit; }
+    .caja-kcal p { margin: 6px 0 0; font-size: 14px; color: var(--n600); }
+    .linea-proteina { margin: 16px 0 0; padding: 14px 16px; border-radius: 8px; background: var(--n100); font-size: 15px; }
+    .boton-calcular { width: 100%; min-height: 52px; margin-top: 8px; }
+    .chips button { min-height: 44px; }
+  </style>
+</head>
+<body>
+  <header class="cabecera">
+    <div class="contenedor cabecera-fila">
+      <span class="marca"><img src="../marca/hd-monograma.webp" alt="" width="48" height="32"><span class="display">Héctor <span class="rojo">Dámaso</span></span></span>
+      <a class="enlace-cabecera" href="../">Todas las herramientas</a>
+    </div>
+    <div class="contenedor portada">
+      <p class="eyebrow claro">Recurso gratuito</p>
+      <h1 class="display">Tu calculadora de <span class="rojo">kcal</span></h1>
+      <p class="entradilla">Cinco datos y tienes una estimación orientativa de lo que necesitas para mantenerte, perder grasa o ganar músculo.</p>
+    </div>
+  </header>
+
+  <main class="contenedor rejilla">
+    <form id="datos" class="panel-oscuro" aria-label="Tus datos" novalidate>
+      <fieldset class="campo">
+        <legend>Eres</legend>
+        <div class="chips" data-grupo="sexo">
+          <button type="button" data-valor="hombre" aria-pressed="true">Hombre</button>
+          <button type="button" data-valor="mujer" aria-pressed="false">Mujer</button>
+        </div>
+      </fieldset>
+
+      <div class="trio campo">
+        <label><span>Edad</span><input id="edad" class="field field-dark" type="number" inputmode="numeric" min="14" max="100" placeholder="35"></label>
+        <label><span>Peso (kg)</span><input id="peso" class="field field-dark" type="number" inputmode="decimal" step="0.1" min="30" max="300" placeholder="80"></label>
+        <label><span>Altura (cm)</span><input id="altura" class="field field-dark" type="number" inputmode="numeric" min="120" max="230" placeholder="175"></label>
+      </div>
+
+      <fieldset class="campo">
+        <legend>¿Cuánto andas al día?</legend>
+        <div class="chips" data-grupo="pasos">
+          <button type="button" data-valor="3500" aria-pressed="false">Poco (menos de 5.000 pasos)</button>
+          <button type="button" data-valor="6500" aria-pressed="true">Normal (5.000-8.000)</button>
+          <button type="button" data-valor="10000" aria-pressed="false">Bastante (8.000-12.000)</button>
+          <button type="button" data-valor="13500" aria-pressed="false">Mucho (más de 12.000)</button>
+        </div>
+      </fieldset>
+
+      <fieldset class="campo">
+        <legend>¿Cuántos días entrenas fuerza a la semana?</legend>
+        <div class="chips" data-grupo="dias">
+          <button type="button" data-valor="0" aria-pressed="false">0</button>
+          <button type="button" data-valor="2" aria-pressed="false">1-2</button>
+          <button type="button" data-valor="3" aria-pressed="true">3</button>
+          <button type="button" data-valor="4" aria-pressed="false">4</button>
+          <button type="button" data-valor="5" aria-pressed="false">5 o más</button>
+        </div>
+      </fieldset>
+      <p id="aviso" class="aviso" role="status"></p>
+    </form>
+
+    <section class="alternativas resultado" aria-live="polite" aria-label="Tus calorías">
+      <p class="eyebrow">Tu estimación</p>
+      <div id="resultado"><p class="resultado-vacio">Rellena edad, peso y altura y aquí aparecen tus calorías.</p></div>
+    </section>
+  </main>
+
+  <section class="contenedor" aria-labelledby="titulo-contacto">
+    <div class="contacto">
+      <div>
+        <p class="eyebrow claro">¿Y ahora qué?</p>
+        <h2 id="titulo-contacto" class="display">Esto es el <span class="rojo">punto de partida</span></h2>
+        <p class="contacto-texto">Una fórmula da una estimación. Lo que funciona es ajustarla cada semana con tu peso, tu cintura y cómo rindes. Si quieres que te ayude con eso, escríbeme.</p>
+      </div>
+      <div class="contacto-botones">
+        <a class="button button-primario" href="https://ig.me/m/hector.damaso.pt" target="_blank" rel="noopener">Escríbeme por Instagram</a>
+        <a class="button button-contorno" href="../calorias/">Calculadora completa (pasos, cardio y plan)</a>
+      </div>
+    </div>
+  </section>
+
+  <footer class="contenedor pie">
+    <p><strong>Es una estimación orientativa.</strong> No es una dieta ni una prescripción individual. Si tienes alguna patología, medicación o estás embarazada, consulta con un profesional sanitario.</p>
+    <p><strong>Cómo lo calcula.</strong> Metabolismo basal con la media de cuatro fórmulas (Mifflin-St Jeor, Tinsley, OMS y Eric Helms), × 1,2 de actividad y × 1,1 de termogénesis, más lo que gastas andando y entrenando (sesiones de 60 minutos). Perder grasa: un déficit para bajar entre el 0,25 % y el 0,8 % de tu peso a la semana. Ganar músculo: un superávit pequeño.</p>
+    <p>No se guarda ni se envía ningún dato: todo se calcula en tu móvil.</p>
+  </footer>
+
+  <script type="module">
+    import { gasto, objetivo, zonas, MINIMO_KCAL, MACROS } from '../js/calorias.js';
+
+    const $ = (id) => document.getElementById(id);
+    const numero = (id) => { const v = $(id).value.trim().replace(',', '.'); return v === '' ? NaN : Number(v); };
+    const miles = (n) => Math.round(n).toLocaleString('es-ES', { useGrouping: 'always' });
+    const r10 = (n) => Math.round(n / 10) * 10;
+    const r50 = (n) => Math.round(n / 50) * 50;
+    const elegido = {};
+
+    document.querySelectorAll('.chips[data-grupo]').forEach((grupo) => {
+      const nombre = grupo.dataset.grupo;
+      elegido[nombre] = grupo.querySelector('[aria-pressed="true"]').dataset.valor;
+      grupo.addEventListener('click', (e) => {
+        const b = e.target.closest('button[data-valor]'); if (!b) return;
+        elegido[nombre] = b.dataset.valor;
+        grupo.querySelectorAll('button').forEach((x) => x.setAttribute('aria-pressed', String(x === b)));
+        pintar();
+      });
+    });
+    $('datos').addEventListener('input', pintar);
+    $('datos').addEventListener('submit', (e) => e.preventDefault());
+
+    function pintar() {
+      const edad = numero('edad'), peso = numero('peso'), altura = numero('altura');
+      $('aviso').textContent = '';
+      if ([edad, peso, altura].some(Number.isNaN)) {
+        $('resultado').innerHTML = '<p class="resultado-vacio">Rellena edad, peso y altura y aquí aparecen tus calorías.</p>';
+        return;
+      }
+      let g;
+      try {
+        g = gasto({ sexo: elegido.sexo, edad, peso, altura, pasos: Number(elegido.pasos), fuerzaMin: Number(elegido.dias) * 60 });
+      } catch (err) {
+        $('aviso').textContent = err.message;
+        $('resultado').innerHTML = '<p class="resultado-vacio">Revisa los datos de la izquierda.</p>';
+        return;
+      }
+      const mant = objetivo(g.mantenimiento, 'mantener');
+      const z = zonas(peso).bueno; // déficit para perder entre el 0,25 % y el 0,8 % del peso a la semana
+      const minimo = MINIMO_KCAL[elegido.sexo === 'mujer' ? 'mujer' : 'hombre'];
+      let alto = r50(g.mantenimiento - z[0]);
+      let bajo = r50(g.mantenimiento - z[1]);
+      const tocaSuelo = bajo < minimo;
+      bajo = Math.max(bajo, minimo); alto = Math.max(alto, bajo);
+      const volumen = objetivo(g.mantenimiento, 'volumen');
+      const proteina = Math.round(MACROS.proteina * peso);
+      $('resultado').innerHTML = `
+        <div class="tres">
+          <div class="caja-kcal principal">
+            <h3>Para perder grasa</h3>
+            <p class="cifra">${miles(bajo)}-${miles(alto)} <small>kcal/día</small></p>
+            <p>Un déficit moderado: pierdes grasa sin pasar hambre y cuidando el músculo.${tocaSuelo ? ` No te bajo de ${miles(minimo)} kcal: por debajo, mejor con un profesional.` : ''}</p>
+          </div>
+          <div class="caja-kcal">
+            <h3>Para mantenerte</h3>
+            <p class="cifra">${miles(mant)} <small>kcal/día</small></p>
+            <p>Lo que gastas más o menos en un día normal.</p>
+          </div>
+          <div class="caja-kcal">
+            <h3>Para ganar músculo</h3>
+            <p class="cifra">${miles(volumen)} <small>kcal/día</small></p>
+            <p>Un superávit pequeño, para crecer sin acumular grasa de más.</p>
+          </div>
+        </div>
+        <p class="linea-proteina"><strong>Proteína:</strong> unos ${miles(proteina)} g al día, repartidos entre tus comidas.</p>
+        <p class="resultado-nota">Estimación orientativa, no una dieta. Úsala 2-3 semanas y mira qué hacen tu peso y tu cintura.</p>`;
+    }
+  </script>
+</body>
+</html>
