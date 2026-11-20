@@ -1,6 +1,6 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
-import { evaluarFase, nivelGrasa } from '../js/fase.js';
+import { evaluarFase, nivelGrasa, senalCambio } from '../js/fase.js';
 
 const base = { sexo: 'hombre', edad: 34, peso: 82, altura: 178, pasos: 6500, dias: 4, anos: 'mas3',
   silueta: 'C', tendencia: 'igual', ultima: 'nada', fuerza: 'estancada', comida: 'finde', dudando: '6a12' };
@@ -10,7 +10,9 @@ test('cintura alta: definir primero', () => {
   assert.equal(r.fase, 'definir');
   assert.ok(r.kcal[0] < r.mantenimiento && r.kcal[1] < r.mantenimiento);
   assert.deepEqual(r.proteina, [1.8, 2]);
-  assert.equal(r.salida.cintura, Math.round(0.47 * 178));
+  assert.equal(r.salida.objetivo, Math.round(0.47 * 178)); // 84
+  assert.equal(r.salida.diferencia, 12); // parte de 96
+  assert.match(r.salida.texto, /Partes de 96 cm/);
 });
 
 test('cintura media y viene de volumen: minicut', () => {
@@ -57,4 +59,27 @@ test('sin silueta avisa', () => {
 test('nunca baja del mínimo de calorías', () => {
   const r = evaluarFase({ ...base, sexo: 'mujer', peso: 55, altura: 158, edad: 45, pasos: 3500, dias: 2, cintura: 90, silueta: 'F' });
   assert.ok(r.kcal[0] >= 1400);
+});
+
+test('la señal de cambio parte de la cintura real, no solo de la altura', () => {
+  const a = senalCambio('definir', 'mujer', 90, 165); // objetivo 81: 9 cm menos
+  const b = senalCambio('definir', 'mujer', 84.5, 165); // objetivo 81: 3,5 cm menos
+  assert.equal(a.objetivo, 81); assert.equal(a.diferencia, 9);
+  assert.equal(b.diferencia, 3.5);
+  assert.match(b.texto, /Partes de 84,5 cm/);
+  assert.notEqual(a.texto, b.texto);
+});
+
+test('si ya está por debajo del objetivo, no da una cifra absurda: manda la silueta', () => {
+  const r = senalCambio('definir', 'hombre', 80, 178); // objetivo 84 y ya tiene 80
+  assert.equal(r.objetivo, null);
+  assert.match(r.texto, /silueta B/);
+  assert.doesNotMatch(r.texto, /84 cm/);
+});
+
+test('volumen: tope desde la cintura real; si ya está en el tope, no dejarla subir', () => {
+  const v = senalCambio('volumen', 'hombre', 79, 178); // tope 89: 10 cm más
+  assert.equal(v.objetivo, 89); assert.equal(v.diferencia, 10);
+  const w = senalCambio('volumen', 'hombre', 90, 178);
+  assert.equal(w.objetivo, null); assert.match(w.texto, /No dejes que pase de 90 cm/);
 });

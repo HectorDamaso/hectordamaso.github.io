@@ -42,6 +42,39 @@ export function nivelGrasa({ sexo, cintura, altura, silueta }) {
   return { nivel, ratio, porCintura, porSilueta, rango: fila[0] };
 }
 
+const cm = (n) => (Math.round(n * 10) / 10).toLocaleString('es-ES');
+
+/**
+ * Señal para cambiar de fase, partiendo de la cintura REAL de la persona.
+ * El objetivo sale de la altura (cintura/altura), pero solo se da si tiene sentido:
+ * si ya está por debajo (o por encima en volumen), la señal pasa a ser la silueta.
+ * Devuelve { actual, objetivo, diferencia, texto }.
+ */
+export function senalCambio(fase, sexo, cintura, altura) {
+  const s = sexo === 'mujer' ? 'mujer' : 'hombre';
+  const actual = cintura;
+  if (fase === 'definir' || fase === 'minicut') {
+    const objetivo = Math.round(SALIDA_DEFINICION[s] * altura);
+    const diferencia = Math.round((actual - objetivo) * 10) / 10;
+    const final = fase === 'minicut' ? ', o a las 8 semanas si llega antes, vuelves a volumen subiendo poco.' : ' y te veas en la silueta B, pasas a volumen.';
+    if (diferencia >= 1) {
+      return { actual, objetivo, diferencia, texto: `Partes de ${cm(actual)} cm de cintura. Cuando bajes a unos ${cm(objetivo)} cm (${cm(diferencia)} cm menos)${final}` };
+    }
+    return { actual, objetivo: null, diferencia: null, texto: fase === 'minicut'
+      ? `Tu cintura (${cm(actual)} cm) ya está en buena zona para tu altura: lo que te sobra se ve más en la silueta que en la cinta. Haz las semanas del minicut y vuelves a volumen cuando te veas en la silueta B, sin pasar de ${cm(actual)} cm.`
+      : `Tu cintura (${cm(actual)} cm) ya está en buena zona para tu altura: lo que te sobra se ve más en la silueta que en la cinta. Pasas a volumen cuando te veas en la silueta B, sin que la cintura pase de ${cm(actual)} cm.` };
+  }
+  if (fase === 'volumen') {
+    const objetivo = Math.round(TOPE_VOLUMEN * altura);
+    const diferencia = Math.round((objetivo - actual) * 10) / 10;
+    if (diferencia >= 1) {
+      return { actual, objetivo, diferencia, texto: `Partes de ${cm(actual)} cm de cintura. Si llegas a ${cm(objetivo)} cm (${cm(diferencia)} cm más), paras el volumen y haces un minicut corto.` };
+    }
+    return { actual, objetivo: null, diferencia: null, texto: `Tu cintura (${cm(actual)} cm) ya está en el límite para tu altura, aunque te veas definido: el músculo también suma. No dejes que pase de ${cm(actual)} cm; si sube, paras y haces un minicut corto.` };
+  }
+  return { actual, objetivo: null, diferencia: null, texto: `Partes de ${cm(actual)} cm de cintura. Si en 6 semanas baja de ahí y las cargas suben, sigue así. Si se estanca todo, toca elegir fase con datos.` };
+}
+
 /**
  * Datos: { sexo, edad, peso, altura, cintura, anos: 'menos1'|'1a3'|'mas3', dias (fuerza/semana),
  *   pasos, silueta: letra de la escala visual (A-F hombre, A-G mujer), tendencia: 'sube'|'igual'|'baja',
@@ -75,27 +108,26 @@ export function evaluarFase(d) {
     proteina = [1.8, 2];
     pasos = Math.min(10000, Math.max(d.pasos || 0, Math.ceil(((d.pasos || 0) + 2000) / 500) * 500));
     duracion = { semanas: 8, texto: 'Un primer bloque de 8 semanas', kg: [r1(peso * 0.0025 * 8), r1(peso * 0.008 * 8)] };
-    salida = { cintura: Math.round(SALIDA_DEFINICION[sexo] * d.altura), texto: 'Cuando tu cintura baje a unos {c} cm y te veas en la silueta B, pasas a volumen.' };
+    salida = senalCambio('definir', sexo, d.cintura, d.altura);
   } else if (fase === 'minicut') {
     kcal = [Math.max(minimo, r50(mant - 1000)), Math.max(minimo, r50(mant - 800))];
     proteina = [1.8, 2];
     pasos = 12000;
     duracion = { semanas: SEMANAS.max, texto: `Entre ${SEMANAS.min} y ${SEMANAS.max} semanas, nunca más`, kg: [r1(peso * PERDIDA.min / 100), r1(peso * PERDIDA.max / 100)] };
-    salida = { cintura: Math.round(SALIDA_DEFINICION[sexo] * d.altura), texto: 'En cuanto llegues a unos {c} cm de cintura (o a las 8 semanas), vuelves a volumen subiendo poco.' };
+    salida = senalCambio('minicut', sexo, d.cintura, d.altura);
   } else if (fase === 'volumen') {
     kcal = [objetivo(mant, 'volumen'), objetivo(mant, 'volumen')];
     proteina = [1.6, 1.8];
     pasos = Math.max(d.pasos || 0, 8000);
     duracion = { semanas: null, texto: 'Mientras ganes más músculo que grasa', kg: [r1(peso * 0.01), r1(peso * 0.02)], porMes: true };
-    salida = { cintura: Math.round(TOPE_VOLUMEN * d.altura), texto: 'Si tu cintura llega a unos {c} cm, paras el volumen y haces un minicut corto.' };
+    salida = senalCambio('volumen', sexo, d.cintura, d.altura);
   } else {
     kcal = [objetivo(mant, 'mantener'), objetivo(mant, 'mantener')];
     proteina = [1.6, 1.8];
     pasos = Math.max(d.pasos || 0, 8000);
     duracion = { semanas: 6, texto: 'Un bloque de 6 semanas y repites el test', kg: null };
-    salida = { cintura: null, texto: 'Si en 6 semanas la cintura baja y las cargas suben, sigue así. Si se estanca todo, toca elegir fase con datos.' };
+    salida = senalCambio('mantener', sexo, d.cintura, d.altura);
   }
-  salida.texto = salida.texto.replace('{c}', salida.cintura);
 
   return {
     fase, nivel, ratio, porCintura, porSilueta, rango, silueta: d.silueta, ansiedad, mantenimiento: Math.round(mant),
