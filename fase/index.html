@@ -1,0 +1,266 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>¿Defino o hago volumen? · Héctor Dámaso</title>
+  <meta name="description" content="Test gratuito: descubre si te toca definir, un minicut, volumen o mantenimiento, con tu pauta para empezar. Herramienta de Héctor Dámaso.">
+  <meta name="theme-color" content="#0a0a0b">
+  <link rel="icon" href="../marca/hd-monograma.webp">
+  <link rel="preload" href="../fuentes/anton-latin.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="preload" href="../fuentes/space-grotesk-latin.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="stylesheet" href="../estilos.css">
+  <style>
+    .chips button { min-height: 44px; }
+    .campo legend, .campo .etiqueta { font-weight: 700; }
+    .boton-ver { width: 100%; min-height: 54px; margin-top: 10px; font-size: 17px; }
+    .fase-titulo { margin: 6px 0 0; font-family: var(--titular); font-size: clamp(36px, 9vw, 52px); line-height: 1; text-transform: uppercase; }
+    .fase-problema { margin: 14px 0 0; font-size: 17px; line-height: 1.5; }
+    .indicador { margin: 18px 0 0; padding: 14px 16px; border-radius: 8px; background: var(--n100); font-size: 15px; }
+    .barra-ind { position: relative; height: 12px; border-radius: 999px; margin: 10px 0 6px; background: linear-gradient(90deg, #2e7d32 0%, #2e7d32 33%, #e0a100 33%, #e0a100 66%, #c0392b 66%); }
+    .barra-ind i { position: absolute; top: -5px; width: 4px; height: 22px; background: #111; border-radius: 2px; }
+    .barra-ind-txt { display: flex; justify-content: space-between; font-size: 12px; color: var(--n600); }
+    .bloque { margin: 22px 0 0; }
+    .bloque h3 { margin: 0 0 10px; font-size: 13px; letter-spacing: .08em; text-transform: uppercase; color: var(--n600); }
+    .pauta { list-style: none; margin: 0; padding: 0; display: grid; gap: 10px; }
+    .pauta li { padding: 12px 14px; border-radius: 8px; border: 1px solid var(--n200); background: var(--n50); font-size: 15px; }
+    .pauta b { display: block; font-family: var(--titular); font-size: 22px; line-height: 1.1; margin-bottom: 2px; }
+    .coste { padding: 16px; border-radius: 8px; background: #fdecea; color: #8f1d17; font-size: 16px; line-height: 1.5; }
+    .ayuda-lista { margin: 0; padding-left: 20px; font-size: 15px; line-height: 1.55; }
+    .wa { display: flex; align-items: center; justify-content: center; gap: 10px; width: 100%; min-height: 56px; margin-top: 18px; border-radius: 8px; background: #1fa855; color: #fff; font-weight: 700; font-size: 17px; text-decoration: none; }
+    .wa:hover { background: #178a45; }
+    .aviso-ansiedad { margin: 16px 0 0; padding: 12px 14px; border-radius: 8px; background: #fff4e0; color: #7a4a00; font-size: 15px; }
+    .oculto { display: none; }
+    .siluetas { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; }
+    .siluetas button { padding: 0; border: 2px solid var(--tinta-linea); border-radius: 8px; overflow: hidden; background: #111; cursor: pointer; display: block; }
+    .siluetas button img { display: block; width: 100%; height: auto; }
+    .siluetas.mujer { grid-template-columns: repeat(4, 1fr); gap: 6px; }
+    .siluetas button[aria-checked="true"] { border-color: var(--rojo); box-shadow: 0 0 0 2px var(--rojo); }
+    .siluetas button[aria-checked="false"] img { opacity: .75; }
+    .tu-silueta { display: grid; grid-template-columns: 74px 1fr; gap: 12px; align-items: center; margin: 18px 0 0; padding: 12px; border-radius: 8px; background: var(--n100); font-size: 15px; }
+    .tu-silueta img { width: 74px; border-radius: 6px; display: block; }
+  </style>
+</head>
+<body>
+  <header class="cabecera">
+    <div class="contenedor cabecera-fila">
+      <span class="marca"><img src="../marca/hd-monograma.webp" alt="" width="48" height="32"><span class="display">Héctor <span class="rojo">Dámaso</span></span></span>
+      <a class="enlace-cabecera" href="../">Todas las herramientas</a>
+    </div>
+    <div class="contenedor portada">
+      <p class="eyebrow claro">Test gratuito · 2 minutos</p>
+      <h1 class="display">¿Defino o hago <span class="rojo">volumen</span>?</h1>
+      <p class="entradilla">Responde con sinceridad y te digo qué fase te toca, por qué llevas tiempo sin tenerlo claro y tu pauta para empezar hoy.</p>
+    </div>
+  </header>
+
+  <main class="contenedor rejilla">
+    <form id="datos" class="panel-oscuro" aria-label="Tus datos" novalidate>
+      <fieldset class="campo">
+        <legend>Eres</legend>
+        <div class="chips" data-grupo="sexo">
+          <button type="button" data-valor="hombre" aria-pressed="true">Hombre</button>
+          <button type="button" data-valor="mujer" aria-pressed="false">Mujer</button>
+        </div>
+      </fieldset>
+
+      <div class="trio campo">
+        <label><span>Edad</span><input id="edad" class="field field-dark" type="number" inputmode="numeric" min="14" max="100" placeholder="34"></label>
+        <label><span>Peso (kg)</span><input id="peso" class="field field-dark" type="number" inputmode="decimal" step="0.1" min="30" max="300" placeholder="82"></label>
+        <label><span>Altura (cm)</span><input id="altura" class="field field-dark" type="number" inputmode="numeric" min="120" max="230" placeholder="178"></label>
+      </div>
+
+      <div class="campo">
+        <label class="etiqueta" for="cintura">Cintura (cm), a la altura del ombligo</label>
+        <p class="ayuda">De pie, relajado, sin meter tripa y sin apretar la cinta.</p>
+        <input id="cintura" class="field field-dark" type="number" inputmode="decimal" step="0.5" min="50" max="200" placeholder="88">
+      </div>
+
+      <fieldset class="campo"><legend>¿A qué silueta te pareces más?</legend>
+        <p class="ayuda">Sé sincero: es para darte una pauta que te sirva. Los porcentajes son ilustrativos.</p>
+        <div class="siluetas" id="siluetas" role="radiogroup" aria-label="Siluetas"></div></fieldset>
+
+      <fieldset class="campo"><legend>¿Cuánto llevas entrenando fuerza?</legend>
+        <div class="chips" data-grupo="anos">
+          <button type="button" data-valor="menos1" aria-pressed="false">Menos de 1 año</button>
+          <button type="button" data-valor="1a3" aria-pressed="true">De 1 a 3 años</button>
+          <button type="button" data-valor="mas3" aria-pressed="false">Más de 3 años</button>
+        </div></fieldset>
+
+      <fieldset class="campo"><legend>¿Cuántos días entrenas fuerza a la semana?</legend>
+        <div class="chips" data-grupo="dias">
+          <button type="button" data-valor="2" aria-pressed="false">1-2</button>
+          <button type="button" data-valor="3" aria-pressed="false">3</button>
+          <button type="button" data-valor="4" aria-pressed="true">4</button>
+          <button type="button" data-valor="5" aria-pressed="false">5 o más</button>
+        </div></fieldset>
+
+      <fieldset class="campo"><legend>¿Cuánto andas al día?</legend>
+        <div class="chips" data-grupo="pasos">
+          <button type="button" data-valor="3500" aria-pressed="false">Poco (menos de 5.000)</button>
+          <button type="button" data-valor="6500" aria-pressed="true">Normal (5.000-8.000)</button>
+          <button type="button" data-valor="10000" aria-pressed="false">Bastante (8.000-12.000)</button>
+          <button type="button" data-valor="13500" aria-pressed="false">Mucho (más de 12.000)</button>
+        </div></fieldset>
+
+      <fieldset class="campo"><legend>¿Qué fue lo último que hiciste?</legend>
+        <div class="chips" data-grupo="ultima">
+          <button type="button" data-valor="volumen" aria-pressed="false">Un volumen</button>
+          <button type="button" data-valor="definicion" aria-pressed="false">Una definición</button>
+          <button type="button" data-valor="nada" aria-pressed="true">Ni una cosa ni otra</button>
+        </div></fieldset>
+
+      <fieldset class="campo"><legend>Tu peso en los últimos 3 meses</legend>
+        <div class="chips" data-grupo="tendencia">
+          <button type="button" data-valor="sube" aria-pressed="false">Ha subido</button>
+          <button type="button" data-valor="igual" aria-pressed="true">Más o menos igual</button>
+          <button type="button" data-valor="baja" aria-pressed="false">Ha bajado</button>
+        </div></fieldset>
+
+      <fieldset class="campo"><legend>Tu fuerza en el gimnasio</legend>
+        <div class="chips" data-grupo="fuerza">
+          <button type="button" data-valor="sube" aria-pressed="false">Sigue subiendo</button>
+          <button type="button" data-valor="estancada" aria-pressed="true">Estancada</button>
+          <button type="button" data-valor="baja" aria-pressed="false">Ha bajado</button>
+        </div></fieldset>
+
+      <fieldset class="campo"><legend>¿Cómo llevas la comida?</legend>
+        <div class="chips" data-grupo="comida">
+          <button type="button" data-valor="bien" aria-pressed="false">Bien, sin problema</button>
+          <button type="button" data-valor="finde" aria-pressed="true">Bien hasta que llega el finde</button>
+          <button type="button" data-valor="ansiedad" aria-pressed="false">Con ansiedad o atracones</button>
+        </div></fieldset>
+
+      <fieldset class="campo"><legend>¿Cuánto llevas sin tener claro si definir o hacer volumen?</legend>
+        <div class="chips" data-grupo="dudando">
+          <button type="button" data-valor="menos3" aria-pressed="false">Menos de 3 meses</button>
+          <button type="button" data-valor="3a6" aria-pressed="false">De 3 a 6 meses</button>
+          <button type="button" data-valor="6a12" aria-pressed="true">De 6 meses a 1 año</button>
+          <button type="button" data-valor="mas12" aria-pressed="false">Más de 1 año</button>
+        </div></fieldset>
+
+      <p id="aviso" class="aviso" role="status"></p>
+      <button id="ver" type="submit" class="button button-primario boton-ver">Ver mi resultado</button>
+    </form>
+
+    <section id="resultado" class="alternativas resultado" aria-live="polite" aria-label="Tu resultado">
+      <p class="eyebrow">Tu resultado</p>
+      <p class="resultado-vacio" id="vacio">Rellena tus datos y pulsa «Ver mi resultado».</p>
+      <div id="contenido" class="oculto"></div>
+    </section>
+  </main>
+
+  <footer class="contenedor pie">
+    <p><strong>Es orientativo.</strong> No es una dieta ni una prescripción individual. Si tienes alguna patología, medicación, estás embarazada o tienes una relación difícil con la comida, consulta con un profesional sanitario.</p>
+    <p><strong>Cómo decide.</strong> Cruza la silueta que eliges con tu cintura dividida entre tu altura (la referencia de salud más usada es que sea menor de 0,5), y lo que has hecho los últimos meses. Las calorías salen de las mismas fórmulas que mi <a href="../calorias/">calculadora de calorías</a>. Ritmos: perder entre el 0,25 % y el 0,8 % del peso a la semana; volumen subiendo un 1-2 % al mes; minicut de 800-1.000 kcal menos para perder un 8-10 % del peso en 4-8 semanas.</p>
+    <p>No se guarda ni se envía ningún dato: todo se calcula en tu móvil.</p>
+  </footer>
+
+  <script type="module">
+    import { evaluarFase } from '../js/fase.js';
+
+    const WHATSAPP = '34618919126';
+    const $ = (id) => document.getElementById(id);
+    const numero = (id) => { const v = $(id).value.trim().replace(',', '.'); return v === '' ? NaN : Number(v); };
+    const miles = (n) => Math.round(n).toLocaleString('es-ES', { useGrouping: 'always' });
+    const dec = (n) => n.toLocaleString('es-ES', { maximumFractionDigits: 1 });
+    const elegido = { silueta: null };
+    const LETRAS = { hombre: 'ABCDEF', mujer: 'ABCDEFG' };
+    const imgSilueta = (sexo, l) => `../marca/escalas/${sexo === 'mujer' ? 'm' : 'h'}_${l}.jpg`;
+    function pintarSiluetas() {
+      const sexo = elegido.sexo || 'hombre';
+      $('siluetas').classList.toggle('mujer', sexo === 'mujer');
+      $('siluetas').innerHTML = [...LETRAS[sexo]].map((l) => `<button type="button" role="radio" data-l="${l}" aria-checked="${elegido.silueta === l}" aria-label="Silueta ${l}"><img src="${imgSilueta(sexo, l)}" alt="Silueta ${l}" loading="lazy"></button>`).join('');
+    }
+    document.getElementById('siluetas').addEventListener('click', (e) => {
+      const b = e.target.closest('button[data-l]'); if (!b) return;
+      elegido.silueta = b.dataset.l;
+      document.querySelectorAll('#siluetas button').forEach((x) => x.setAttribute('aria-checked', String(x === b)));
+    });
+    document.querySelectorAll('.chips[data-grupo]').forEach((grupo) => {
+      const nombre = grupo.dataset.grupo;
+      elegido[nombre] = grupo.querySelector('[aria-pressed="true"]').dataset.valor;
+      grupo.addEventListener('click', (e) => {
+        const b = e.target.closest('button[data-valor]'); if (!b) return;
+        elegido[nombre] = b.dataset.valor;
+        grupo.querySelectorAll('button').forEach((x) => x.setAttribute('aria-pressed', String(x === b)));
+        if (nombre === 'sexo') { elegido.silueta = null; pintarSiluetas(); }
+      });
+    });
+    pintarSiluetas();
+
+    const TEXTOS = {
+      definir: { titulo: 'Define primero', corto: 'DEFINIR PRIMERO',
+        problema: 'Tu problema no es elegir fase: es que quieres crecer con más grasa de la que te deja ver el músculo. Si empiezas el volumen así, acumulas más grasa y vuelves a empezar de cero. Primero toca bajar cintura.' },
+      minicut: { titulo: 'Minicut y después volumen', corto: 'MINICUT Y LUEGO VOLUMEN',
+        problema: 'Tu volumen ha pasado el punto dulce: la báscula sube, pero ya es sobre todo grasa. No hace falta una definición de meses: un minicut corto te devuelve al punto desde el que seguir creciendo.' },
+      volumen: { titulo: 'Puedes empezar el volumen', corto: 'VOLUMEN YA',
+        problema: 'Estás más definido de lo que crees. Seguir recortando te quita músculo y fuerza. Lo que te falta ahora no es otra dieta: es comer para crecer, subiendo poco y con control.' },
+      mantener: { titulo: 'Mantenimiento con progresión', corto: 'MANTENIMIENTO CON PROGRESIÓN',
+        problema: 'Estás en tierra de nadie: ni defines del todo ni creces. Antes de elegir fase necesitas unas semanas comiendo lo que gastas y con entrenamiento con progresión real, para decidir con datos y no por sensaciones.' },
+    };
+    const DUDANDO = {
+      menos3: 'Llevas poco tiempo con la duda. Es el mejor momento para decidir con datos antes de perder más semanas.',
+      '3a6': 'Llevas entre 3 y 6 meses sin tener claro qué fase hacer.',
+      '6a12': 'Llevas más de medio año sin tener claro qué fase hacer.',
+      mas12: 'Llevas más de un año sin tener claro qué fase hacer.',
+    };
+
+    $('datos').addEventListener('submit', (e) => {
+      e.preventDefault();
+      $('aviso').textContent = '';
+      const d = { ...elegido, edad: numero('edad'), peso: numero('peso'), altura: numero('altura'), cintura: numero('cintura'),
+        dias: Number(elegido.dias), pasos: Number(elegido.pasos) };
+      if ([d.edad, d.peso, d.altura, d.cintura].some(Number.isNaN)) { $('aviso').textContent = 'Rellena edad, peso, altura y cintura.'; return; }
+      if (!d.silueta) { $('aviso').textContent = 'Elige la silueta que más se parece a ti.'; $('siluetas').scrollIntoView({ behavior: 'smooth', block: 'center' }); return; }
+      let r;
+      try { r = evaluarFase(d); } catch (err) { $('aviso').textContent = err.message; return; }
+      const t = TEXTOS[r.fase];
+      const pctRatio = Math.round(r.ratio * 100);
+      const pos = Math.min(98, Math.max(2, ((r.ratio - 0.38) / (0.6 - 0.38)) * 100));
+      const kcal = r.kcal[0] === r.kcal[1] ? `${miles(r.kcal[0])} kcal al día` : `${miles(r.kcal[0])}-${miles(r.kcal[1])} kcal al día`;
+      const dur = r.duracion.kg
+        ? (r.duracion.porMes ? `${r.duracion.texto}: unos ${dec(r.duracion.kg[0])}-${dec(r.duracion.kg[1])} kg al mes` : `${r.duracion.texto}: entre ${dec(r.duracion.kg[0])} y ${dec(r.duracion.kg[1])} kg menos a un ritmo sano`)
+        : r.duracion.texto;
+      const fraseWa = `Hola Héctor 👋 He hecho el test de fase y me sale: ${t.corto}. ¿Cómo lo harías conmigo?`;
+      $('contenido').innerHTML = `
+        <h2 class="fase-titulo">${t.titulo}</h2>
+        <p class="fase-problema">${t.problema}</p>
+        <div class="tu-silueta"><img src="${imgSilueta(d.sexo, r.silueta)}" alt=""><div>Te ves como la silueta <strong>${r.silueta} (${r.rango})</strong>${r.porSilueta !== r.porCintura ? '. Tu cintura cuenta otra cosa, así que lo he tenido en cuenta.' : ', y tu cintura lo confirma.'}</div></div>
+        <div class="indicador">Tu cintura es el <strong>${pctRatio} %</strong> de tu altura.
+          <div class="barra-ind"><i style="left:${pos}%"></i></div>
+          <div class="barra-ind-txt"><span>Definido</span><span>Medio</span><span>Toca bajar cintura</span></div>
+        </div>
+        ${r.ansiedad ? '<p class="aviso-ansiedad">Me dices que la comida te genera ansiedad o atracones. Por eso no te propongo nada agresivo: un déficit suave y con margen. Si te pasa a menudo, merece la pena que lo veas con un profesional.</p>' : ''}
+        <div class="bloque"><h3>Tu pauta para empezar hoy</h3>
+          <ul class="pauta">
+            <li><b>${kcal}</b>Tu punto de partida. Tu mantenimiento ronda las ${miles(r.mantenimiento)} kcal.</li>
+            <li><b>${r.proteinaG[0]}-${r.proteinaG[1]} g de proteína</b>Entre ${dec(r.proteina[0])} y ${dec(r.proteina[1])} g por kilo, repartida en tus comidas.</li>
+            <li><b>${miles(r.pasos)} pasos al día</b>Como mínimo, todos los días.</li>
+            <li><b>Entrenamiento con progresión real</b>Apunta cargas y busca una repetición más o un poco más de peso cada semana.</li>
+            <li><b>${r.duracion.semanas ? r.duracion.semanas + ' semanas' : 'Revisa cada 15 días'}</b>${dur}.</li>
+            <li><b>Cuándo cambiar</b>${r.salida.texto}</li>
+          </ul>
+        </div>
+        <div class="bloque"><h3>Lo que te está costando</h3>
+          <p class="coste">${DUDANDO[r.dudando]} Ese tiempo sin un criterio para entrar y salir de cada fase es lo que te frena, no tu genética.</p>
+        </div>
+        <div class="bloque"><h3>Puedes hacerlo solo con esta pauta. Si lo hacemos juntos</h3>
+          <ul class="ayuda-lista">
+            <li>Revisamos cada 15 días tu peso, tu cintura y tus cargas.</li>
+            <li>Te digo cuándo entrar y cuándo salir de cada fase, con datos.</li>
+            <li>Ajustamos antes de que te estanques, no después.</li>
+          </ul>
+          <a class="wa" href="https://wa.me/${WHATSAPP}?text=${encodeURIComponent(fraseWa)}" target="_blank" rel="noopener">
+            <svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true"><path fill="currentColor" d="M12 2a10 10 0 0 0-8.6 15.1L2 22l5-1.3A10 10 0 1 0 12 2Zm0 18.2a8.2 8.2 0 0 1-4.2-1.2l-.3-.2-3 .8.8-2.9-.2-.3A8.2 8.2 0 1 1 12 20.2Z"/></svg>
+            Escríbeme por WhatsApp
+          </a>
+          <p class="resultado-nota">Te llega el mensaje ya escrito con tu resultado. Te respondo yo.</p>
+        </div>`;
+      $('vacio').classList.add('oculto');
+      $('contenido').classList.remove('oculto');
+      $('resultado').scrollIntoView({ behavior: 'smooth', block: 'start' });
+    });
+  </script>
+</body>
+</html>
